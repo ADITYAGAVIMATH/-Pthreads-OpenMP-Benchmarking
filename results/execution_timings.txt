@@ -1,0 +1,62 @@
+================================================================================
+EXPERIMENT 02: MULTITHREADED PROGRAMMING (PTHREADS VS OPENMP)
+EMPIRICAL BENCHMARK CONSOLE AUDIT & SCALING LOGS
+================================================================================
+
+[1] SEQUENTIAL BASELINE WORKLOAD (N = 1,000,000,000 terms)
+Command: ./sequential
+Workload Size  : 1000000000 elements
+Result         : 499999999500.00
+Execution time : 1.353219 seconds (Average of 5 runs: 1.353895, 1.355794, 1.349621, 1.353422, 1.353365)
+
+Local Live Run (WSL2 Ubuntu):
+Result = 499999999500.00
+Execution time = 1.788086 seconds
+
+
+[2] PTHREADS SCALABILITY BENCHMARK (pthread_perf.c)
+Command: ./pthread_perf
+Input Threads: 1  -> Result: 499999999500.00 | Execution time: 1.348142 seconds (Speedup: 1.004x)
+Input Threads: 2  -> Result: 499999999500.00 | Execution time: 0.680737 seconds (Speedup: 1.988x)
+Input Threads: 4  -> Result: 499999999500.00 | Execution time: 0.358872 seconds (Speedup: 3.771x)
+Input Threads: 6  -> Result: 499999999500.00 | Execution time: 0.241345 seconds (Speedup: 5.608x)
+Input Threads: 16 -> Result: 499999999500.00 | Execution time: 0.144812 seconds (Speedup: 9.345x)
+
+Local Live Runs (WSL2 Ubuntu):
+Threads: 1  -> 1.821049 s
+Threads: 2  -> 0.903876 s
+Threads: 3  -> 0.630747 s
+Threads: 4  -> 0.483806 s
+Threads: 5  -> 0.400285 s
+Threads: 6  -> 0.353053 s
+Threads: 16 -> 0.202321 s
+
+
+[3] OPENMP SCALABILITY BENCHMARK (omp_perf.c)
+Command: ./omp_perf
+Input Threads: 1  -> Result: 499999999500.00 | Execution time: 1.409294 seconds (Speedup: 0.960x)
+Input Threads: 2  -> Result: 499999999500.00 | Execution time: 0.715560 seconds (Speedup: 1.891x)
+Input Threads: 4  -> Result: 499999999500.00 | Execution time: 0.360803 seconds (Speedup: 3.751x)
+Input Threads: 6  -> Result: 499999999500.00 | Execution time: 0.241608 seconds (Speedup: 5.601x)
+Input Threads: 16 -> Result: 499999999500.00 | Execution time: 0.140692 seconds (Speedup: 9.618x)
+
+Local Live Runs (WSL2 Ubuntu):
+Threads: 1  -> 1.826918 s
+Threads: 2  -> 0.907281 s
+Threads: 4  -> 0.479157 s
+Threads: 6  -> 0.361321 s
+Threads: 16 -> 0.218959 s
+
+
+[4] SYNCHRONIZATION AND RACE CONDITION VERIFICATION
+Unsynchronized Pthreads (race.c):
+Expected counter = 400000 | Actual counter = 197937 (Data Corruption: 50.5% lost updates)
+
+Synchronized Pthreads (mutex.c):
+Expected counter = 400000 | Actual counter = 400000 (Correctness: 100.0%)
+
+Unsynchronized OpenMP (omp_race.c):
+Expected counter = 400000 | Actual counter = 119127 (Data Corruption: 70.2% lost updates)
+
+Synchronized OpenMP (omp_critical.c):
+Expected counter = 400000 | Actual counter = 400000 (Correctness: 100.0%)

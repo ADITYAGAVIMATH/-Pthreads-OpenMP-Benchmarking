@@ -1,0 +1,26 @@
+# Compiled binaries and object files
+*.o
+*.obj
+*.exe
+*.out
+thread1
+thread2
+thread_sum
+race
+mutex
+pthread_perf
+omp1
+omp_sum
+omp_race
+omp_critical
+omp_barrier
+omp_perf
+sequential
+
+# Build and temporary directories
+__pycache__/
+*.py[cod]
+.vscode/
+.idea/
+*.swp
+*.DS_Store

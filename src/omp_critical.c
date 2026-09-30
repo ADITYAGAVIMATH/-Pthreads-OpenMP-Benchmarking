@@ -1,0 +1,35 @@
+/**
+ * @file omp_critical.c
+ * @brief Race Condition Resolution using OpenMP Critical Section
+ * 
+ * Part of Laboratory Experiment 02: Multithreaded Programming
+ * Course: Parallel and Graphical Computing (PCG)
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define NUM_THREADS 4
+#define INCREMENTS 100000
+
+int counter = 0;
+
+int main(void) {
+    omp_set_num_threads(NUM_THREADS);
+
+    #pragma omp parallel
+    {
+        for (int i = 0; i < INCREMENTS; i++) {
+            #pragma omp critical
+            {
+                counter++;
+            }
+        }
+    }
+
+    printf("Expected counter = %d\n", NUM_THREADS * INCREMENTS);
+    printf("Actual counter   = %d\n", counter);
+
+    return EXIT_SUCCESS;
+}
